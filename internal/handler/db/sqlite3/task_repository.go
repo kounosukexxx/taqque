@@ -89,13 +89,23 @@ func (r *taskRepository) convertRowstoModel(rows *sql.Rows) ([]*model.Task, erro
 }
 
 func (r *taskRepository) GetMultiOrderByPriorityDescAndSortKeyAsc(ctx context.Context, limit *int) ([]*model.Task, error) {
-	sqlStmt := `
-	SELECT id, title, priority, sort_key, created_at, updated_at FROM tasks WHERE deleted_at == "" ORDER BY priority DESC, sort_key ASC
-	`
-	rows, err := r.sqlite3.db.Query(sqlStmt)
+	var rows *sql.Rows
+	var err error
+	if limit == nil {
+		sqlStmt := `
+		SELECT id, title, priority, sort_key, created_at, updated_at FROM tasks WHERE deleted_at == "" ORDER BY priority DESC, sort_key ASC
+		`
+		rows, err = r.sqlite3.db.Query(sqlStmt)
+	} else {
+		sqlStmt := `
+		SELECT id, title, priority, sort_key, created_at, updated_at FROM tasks WHERE deleted_at == "" ORDER BY priority DESC, sort_key ASC LIMIT ?
+		`
+		rows, err = r.sqlite3.db.Query(sqlStmt, *limit)
+	}
 	if err != nil {
 		return nil, err
 	}
+
 	return r.convertRowstoModel(rows)
 }
 

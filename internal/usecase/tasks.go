@@ -21,7 +21,7 @@ func (u *TaskUsecase) ListTasks(ctx context.Context) ([]*model.Task, error) {
 func (u *TaskUsecase) PushTask(ctx context.Context, title string, priority int) ([]*model.Task, error) {
 	task, err := model.NewTask(title, priority)
 	if err != nil {
-		return nil, fmt.Errorf("model.NewTask failed: %w", err)
+		return nil, err
 	}
 
 	if err := u.taskRepository.Create(ctx, task); err != nil {
