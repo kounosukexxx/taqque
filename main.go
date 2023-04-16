@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 
 	taqqueCli "github.com/kounosukexxx/taqque/internal/services/cli"
 	"github.com/urfave/cli/v2"
@@ -32,9 +31,12 @@ var listCmd = &cli.Command{
 var pushCmd = &cli.Command{
 	Name:  "push",
 	Usage: "push a task with priority",
+	Flags: []cli.Flag{
+		&cli.IntFlag{Name: "p", Usage: "specify priority", Value: 0},
+	},
 	Action: func(ctx *cli.Context) error {
 		taskTitle := ctx.Args().Get(0)
-		priority, _ := strconv.Atoi(ctx.Args().Get(1))
+		priority := ctx.Int("p")
 		cli, err := taqqueCli.NewCli()
 		if err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "%+v\n", err.Error())
@@ -54,8 +56,11 @@ var pushCmd = &cli.Command{
 var popCmd = &cli.Command{
 	Name:  "pop",
 	Usage: "pop a task of specific priority",
+	Flags: []cli.Flag{
+		&cli.IntFlag{Name: "p", Usage: "specify priority", Value: 0},
+	},
 	Action: func(ctx *cli.Context) error {
-		priority, _ := strconv.Atoi(ctx.Args().Get(0))
+		priority := ctx.Int("p")
 		cli, err := taqqueCli.NewCli()
 		if err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "%+v\n", err.Error())
@@ -99,6 +104,7 @@ func main() {
 		popCmd,
 		// cleanCmd,
 	}
+	app.SkipFlagParsing = true
 
 	if err := app.Run(os.Args); err != nil {
 		fmt.Fprint(os.Stderr, err.Error()+"\n")

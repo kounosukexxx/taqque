@@ -40,7 +40,7 @@ func (u *TaskUsecase) PopTask(ctx context.Context, priority int, baseTime time.T
 	task, err := u.taskRepository.GetFirstByPriorityOrderBySortKeyAsc(ctx, priority)
 	if err != nil {
 		if errors.Is(err, repositories.ErrTaskNotFound) {
-			return nil, nil
+			return nil, fmt.Errorf("task not found. specified priority: %d", priority)
 		}
 		return nil, fmt.Errorf("taskRepository.GetFirstByPriorityOrderBySortKeyAsc failed: %w", err)
 	}

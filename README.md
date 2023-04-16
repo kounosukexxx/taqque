@@ -43,7 +43,7 @@ Tasks are listed in descending order of priority.
 By default, a task is pushed with 0 priority.
 
 ```shell script
-taqque push {title} {priority}
+taqque push -p {priority} {title}
 ```
 
 ### pop a task with priority
@@ -53,7 +53,7 @@ You can also pop a task specifing priority.
 By default, a task with 0 priority is popped.
 
 ```shell script
-taqque pop {priority}
+taqque pop -p {priority}
 ```
 
 ## Demonstration
@@ -81,7 +81,7 @@ taqque pop
 |     0 |        0 | assinmentB |
 +-------+----------+------------+
 
-taqque push high_priority_task 1
+taqque push -p 1 high_priority_task
 +-------+----------+--------------------+
 | INDEX | PRIORITY |       TITLE        |
 +-------+----------+--------------------+
@@ -96,7 +96,7 @@ taqque pop
 |     0 |        1 | high_priority_task |
 +-------+----------+--------------------+
 
- taqque pop 1
+ taqque pop -p 1
 +-------+----------+-------+
 | INDEX | PRIORITY | TITLE |
 +-------+----------+-------+
