@@ -1,0 +1,1 @@
+SELECT id, title, sort_key, created_at, updated_at FROM tasks WHERE priority = 0 AND deleted_at == '' ORDER BY sort_key ASC LIMIT 1;
