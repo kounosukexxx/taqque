@@ -28,8 +28,7 @@ func (u *TaskUsecase) PushTask(ctx context.Context, title string, priority int) 
 		return nil, fmt.Errorf("taskRepository.CreateTask failed: %w", err)
 	}
 
-	limit := 5
-	tasks, err := u.taskRepository.GetMultiOrderByPriorityDescAndSortKeyAsc(ctx, &limit)
+	tasks, err := u.taskRepository.GetMultiOrderByPriorityDescAndSortKeyAsc(ctx, nil)
 	if err != nil {
 		return nil, fmt.Errorf("taskRepository.GetMultiOrderByPriorityDescAndSortKeyAsc failed: %w", err)
 	}
@@ -50,8 +49,7 @@ func (u *TaskUsecase) PopTask(ctx context.Context, priority int, baseTime time.T
 		return nil, fmt.Errorf("taskRepository.CreateTask failed: %w", err)
 	}
 
-	limit := 5
-	tasks, err := u.taskRepository.GetMultiOrderByPriorityDescAndSortKeyAsc(ctx, &limit)
+	tasks, err := u.taskRepository.GetMultiOrderByPriorityDescAndSortKeyAsc(ctx, nil)
 	if err != nil {
 		return nil, fmt.Errorf("taskRepository.GetMultiOrderByPriorityDescAndSortKeyAsc failed: %w", err)
 	}
