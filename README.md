@@ -40,20 +40,20 @@ You can also set negative priority.
 
 Tasks are listed in descending order of priority.
 
-By default, a task is pushed with 0 priority.
+By default, a task is pushed with 1 priority.
 
 ```shell script
-taqque push -p {priority} {title}
+taqque push {title} {priority}
 ```
 
 ### pop a task with priority
 
 You can also pop a task specifing priority.
 
-By default, a task with 0 priority is popped.
+By default, a task with 1 priority is popped.
 
 ```shell script
-taqque pop -p {priority}
+taqque pop {priority}
 ```
 
 ## Demonstration
@@ -63,40 +63,40 @@ taqque push assinmentA
 +-------+----------+------------+
 | INDEX | PRIORITY |   TITLE    |
 +-------+----------+------------+
-|     0 |        0 | assinmentA |
+|     0 |     1.00 | assinmentA |
 +-------+----------+------------+
 
 taqque push assinmentB
 +-------+----------+------------+
 | INDEX | PRIORITY |   TITLE    |
 +-------+----------+------------+
-|     0 |        0 | assinmentA |
-|     1 |        0 | assinmentB |
+|     0 |     1.00 | assinmentA |
+|     1 |     1.00 | assinmentB |
 +-------+----------+------------+
 
 taqque pop
 +-------+----------+------------+
 | INDEX | PRIORITY |   TITLE    |
 +-------+----------+------------+
-|     0 |        0 | assinmentB |
+|     0 |     1.00 | assinmentB |
 +-------+----------+------------+
 
-taqque push -p 1 high_priority_task
+taqque push high_priority_task 2
 +-------+----------+--------------------+
 | INDEX | PRIORITY |       TITLE        |
 +-------+----------+--------------------+
-|     0 |        1 | high_priority_task |
-|     1 |        0 | assinmentB         |
+|     0 |     2.00 | high_priority_task |
+|     1 |     1.00 | assinmentB         |
 +-------+----------+--------------------+
 
 taqque pop
 +-------+----------+--------------------+
 | INDEX | PRIORITY |       TITLE        |
 +-------+----------+--------------------+
-|     0 |        1 | high_priority_task |
+|     0 |     2.00 | high_priority_task |
 +-------+----------+--------------------+
 
- taqque pop -p 1
+ taqque pop 2
 +-------+----------+-------+
 | INDEX | PRIORITY | TITLE |
 +-------+----------+-------+

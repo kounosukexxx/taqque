@@ -11,7 +11,7 @@ import (
 type Task struct {
 	ID       string
 	Title    string
-	Priority int
+	Priority float64
 
 	// defalut value is create time
 	SortKey     time.Time
@@ -20,7 +20,7 @@ type Task struct {
 	DeletedTime *time.Time
 }
 
-func NewTask(title string, priority int) (*Task, error) {
+func NewTask(title string, priority float64) (*Task, error) {
 	if title == "" {
 		return nil, errors.New("title is empty")
 	}

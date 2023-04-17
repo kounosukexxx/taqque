@@ -18,7 +18,7 @@ func (u *TaskUsecase) ListTasks(ctx context.Context) ([]*model.Task, error) {
 	return tasks, nil
 }
 
-func (u *TaskUsecase) PushTask(ctx context.Context, title string, priority int) ([]*model.Task, error) {
+func (u *TaskUsecase) PushTask(ctx context.Context, title string, priority float64) ([]*model.Task, error) {
 	task, err := model.NewTask(title, priority)
 	if err != nil {
 		return nil, err
@@ -35,11 +35,11 @@ func (u *TaskUsecase) PushTask(ctx context.Context, title string, priority int) 
 	return tasks, nil
 }
 
-func (u *TaskUsecase) PopTask(ctx context.Context, priority int, baseTime time.Time) ([]*model.Task, error) {
+func (u *TaskUsecase) PopTask(ctx context.Context, priority float64, baseTime time.Time) ([]*model.Task, error) {
 	task, err := u.taskRepository.GetFirstByPriorityOrderBySortKeyAsc(ctx, priority)
 	if err != nil {
 		if errors.Is(err, repositories.ErrTaskNotFound) {
-			return nil, fmt.Errorf("task not found. specified priority: %d", priority)
+			return nil, fmt.Errorf("task not found. specified priority: %f", priority)
 		}
 		return nil, fmt.Errorf("taskRepository.GetFirstByPriorityOrderBySortKeyAsc failed: %w", err)
 	}

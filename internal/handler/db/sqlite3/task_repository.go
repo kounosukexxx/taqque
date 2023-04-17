@@ -15,13 +15,15 @@ import (
 
 // TODO: なんかいい感じにする。生SQLを書きたく無い。また、Scanあたりの重複をなくしたい
 
-var _ repositories.TaskRepository = (*taskRepository)(nil)
+var (
+	_ repositories.TaskRepository = (*taskRepository)(nil)
+
+	createTaskTableSQL = `
+	CREATE TABLE IF NOT EXISTS tasks (id text, title text, priority float, sort_key text, created_at text, updated_at text, deleted_at text, PRIMARY KEY(id));
+	`
+)
 
 const taskTableName = "tasks"
-
-var createTaskTableSQL = `
-CREATE TABLE IF NOT EXISTS tasks (id text, title text, priority integer, sort_key text, created_at text, updated_at text, deleted_at text, PRIMARY KEY(id));
-`
 
 type taskRepository struct {
 	sqlite3 *sqlite3
@@ -56,7 +58,7 @@ func (r *taskRepository) convertRowstoModel(rows *sql.Rows) ([]*model.Task, erro
 	defer rows.Close()
 	for rows.Next() {
 		var id, title, sort_key, created_time, updated_time string
-		var priority int
+		var priority float64
 		if err := rows.Scan(&id, &title, &priority, &sort_key, &created_time, &updated_time); err != nil {
 			return nil, err
 		}
@@ -120,7 +122,7 @@ func (r *taskRepository) Create(ctx context.Context, task *model.Task) error {
 	return nil
 }
 
-func (r *taskRepository) GetFirstByPriorityOrderBySortKeyAsc(ctx context.Context, priority int) (*model.Task, error) {
+func (r *taskRepository) GetFirstByPriorityOrderBySortKeyAsc(ctx context.Context, priority float64) (*model.Task, error) {
 	sqlStmt := `
 	SELECT id, title, sort_key, created_at, updated_at FROM tasks WHERE priority = ? AND deleted_at == "" ORDER BY sort_key ASC LIMIT 1
 	`
@@ -128,7 +130,7 @@ func (r *taskRepository) GetFirstByPriorityOrderBySortKeyAsc(ctx context.Context
 	var id, title, sort_key, create_time, update_time string
 	if err := row.Scan(&id, &title, &sort_key, &create_time, &update_time); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, fmt.Errorf("task not found. priority = %d: %w", priority, repositories.ErrTaskNotFound)
+			return nil, fmt.Errorf("task not found. priority = %f: %w", priority, repositories.ErrTaskNotFound)
 		}
 	}
 	sortKey, err := r.sqlite3.parseTime(sort_key)
