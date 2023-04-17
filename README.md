@@ -36,7 +36,7 @@ taqque pop
 
 ### push a task with priority
 
-You can also set negative priority.
+You can't set negative priority.
 
 Tasks are listed in descending order of priority.
 
